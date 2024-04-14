@@ -1,6 +1,10 @@
 # onvif_camera_mocking
 This project consists of tools and instructions for mocking an ONVIF compliant IP camera and passing an RTSP stream through it.
 
+Useful information:
+- [Genivia ONVIF](https://www.genivia.com/examples/onvif/index.html)
+
+
 ## Steps
 > Note: these steps only work on Linux and have only been tested on Ubuntu 22.04 LTS
 
@@ -56,37 +60,13 @@ Install dependencies for all three repos; [ONVIF server](https://github.com/Anta
     ./onvif_camera_mocking/scripts/start-onvif-camera.sh eth0
     ```
 
-### Ensure that the ONVIF camera service is running and discoverable 
-Use one of the [tools recommended by onvif_srvd for testing the ONVIF service](https://github.com/AntaeusNar/onvif_srvd#testing). If you have the ONVIF Device Manager installed on a Windows host on the same network as your newly mocked camera, simply open it and confirm that a new camera called "TestDev" exists.
-
-### Pass an rstp feed through the "camera" (ONVIF service) 
-Now that we have a camera connected to the network, lets pass some footage through it.
-#### Run locally
-1. Install gstreamer RTSP server and
-    ```sh
-    sudo apt-get install libgstrtspserver-1.0-dev gstreamer1.0-rtsp 
-    ```
-1. Install the gstreamer plugins needed for x264enc of the stream
-    ```sh
-    sudo apt-get install gstreamer1.0-plugins-ugly
-    ```
-1. Run the Python program that uses `videotestsrc` to pass a fake stream through the camera of a vertical bar moving horizontally. The implementation was modified from this [StackOverflow discussion](https://stackoverflow.com/questions/59858898/how-to-convert-a-video-on-disk-to-a-rtsp-stream).
-    ```sh
-    sudo ./rtsp-feed.py
-    ```
-
-    Optionally, configure the color of the feed by passing a color [in decimal format](https://www.mathsisfun.com/hexadecimal-decimal-colors.html) as an argument, such as the following for blue.
-    ```sh
-    sudo ./rtsp-feed.py 3093194
-    ```
+### Ensure that the ONVIF camera service is running and discoverable
+Windows:
+- [ONVIF Device Manager](https://sourceforge.net/projects/onvifdm/)
+This will give to some information and details.
+- [VLC]() Look/listen to the RTSP stream
 ### Cleanup
 1. Terminate the ONVIF and Discovery services
     ```sh
-    ./scripts/stop-onvif-camera.sh
-    ```
-    Or if you'd rather
-    ```sh
-    curl https://raw.githubusercontent.com/kate-goldenring/onvif-camera-mocking/main/scripts/stop-onvif-camera.sh > ./stop-onvif-camera.sh
-    chmod +x ./stop-onvif-camera.sh
-    ./stop-onvif-camera.sh
+    ./onvif_camera_mocking//scripts/stop-onvif-camera.sh
     ```
