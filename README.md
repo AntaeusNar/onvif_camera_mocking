@@ -5,7 +5,7 @@ This project consists of tools and instructions for mocking an ONVIF compliant I
 > Note: these steps only work on Linux and have only been tested on Ubuntu 22.04 LTS
 
 ### Installation
-Install dependencies for all three repos [ONVIF server]((https://github.com/AntaeusNar/onvif_srvd)) [WS-Discovery Service](https://github.com/AntaeusNar/onvif_wsdd) and this repo.
+Install dependencies for all three repos; [ONVIF server]((https://github.com/AntaeusNar/onvif_srvd)), [WS-Discovery Service](https://github.com/AntaeusNar/onvif_wsdd), and this repo.
 
 1. Install dependencies
     ```sh
@@ -16,7 +16,7 @@ Install dependencies for all three repos [ONVIF server]((https://github.com/Anta
         gsoap libgsoap-dev -y
     ```
 
-1. Clone and build the [ONVIF server]((https://github.com/AntaeusNar/onvif_srvd)) using system gSOAP.
+1. Clone and build the [ONVIF server](https://github.com/AntaeusNar/onvif_srvd) using system gSOAP.
 
     ```sh
     cd ~
