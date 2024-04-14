@@ -18,6 +18,7 @@ Install dependencies for all three repos; [ONVIF server](https://github.com/Anta
         git g++ wget curl wget openssl libssl-dev zlib1g-dev libcrypto++8 \
         libgstrtspserver-1.0-dev gstreamer1.0-rtsp gstreamer1.0-plugins-ugly\
         gsoap libgsoap-dev -y
+    sudo apt install build-essential gdb libboost-all-dev -y
     ```
 
 1. Clone and build the [ONVIF server](https://github.com/AntaeusNar/onvif_srvd) using system gSOAP.
