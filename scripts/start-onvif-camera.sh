@@ -49,4 +49,4 @@ fi
 ip4=$(/sbin/ip -o -4 addr list $interface | awk '{print $4}' | cut -d/ -f1)
 sudo $directory/build/onvif_srvd/onvif_srvd  --ifs $interface --scope "onvif://www.onvif.org/name/TestDev onvif://www.onvif.org/Profile/S" --name RTSP --width 800 --height 600 --url rtsp://$ip4:8554/stream1 --type MPEG4 --firmware_ver $firmware_ver
 $directory/onvif_wsdd/build/wsdd  --if_name $interface --type tdn:NetworkVideoTransmitter --xaddr http://%s:1000/onvif/device_service --scope "onvif://www.onvif.org/name/TestDev onvif://www.onvif.org/Profile/S"
-sudo $directory/rtsp-feed.py &
+sudo $directory/onvif_camera_mocking/rtsp-feed.py &
