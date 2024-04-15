@@ -18,7 +18,6 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def do_create_element(self, url):
         global color
         mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96".format(color)
-        # mock_pipeline = "audiotestsrc wave=2 freq=200 ! tee name=t ! queue ! audioconvert ! autoaudiosink t. ! queue ! audioconvert ! libvisual_lv_scope ! videoconvert ! autovideosink"
         print ("Pipeling launching: " + mock_pipeline)
         return Gst.parse_launch(mock_pipeline)
 
