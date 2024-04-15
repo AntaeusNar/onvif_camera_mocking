@@ -65,7 +65,7 @@ Install dependencies for all three repos; [ONVIF server](https://github.com/Anta
 Windows:
 - [ONVIF Device Manager](https://sourceforge.net/projects/onvifdm/)
 This will give to some information and details.
-- [VLC]() Look/listen to the RTSP stream
+- [VLC](https://www.videolan.org/) Look/listen to the RTSP stream
 ### Cleanup
 1. Terminate the ONVIF and Discovery services
     ```sh
