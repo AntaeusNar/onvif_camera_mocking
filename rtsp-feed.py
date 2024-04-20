@@ -8,7 +8,8 @@ gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 gi.require_version('GstBase', '1.0')
 gi.require_version('GstAudio', '1.0')
-from gi.repository import Gst, GstRtspServer, GObject, GLib, GstBase, GstAudio
+gi.require_version('GstVisual', '1.0')
+from gi.repository import Gst, GstRtspServer, GObject, GLib, GstBase, GstAudio, GstVisual
 
 loop = GLib.MainLoop()
 Gst.init(None)
