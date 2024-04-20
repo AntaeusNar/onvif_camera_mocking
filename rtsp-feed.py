@@ -25,8 +25,9 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         audio_pipeline = audio_src + audio_enc
         video_pipeline = video_src + video_enc
 
-        mux = 'mpegtsmux name=mux'
-        mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
+        # https://gstreamer.freedesktop.org/documentation/mp4/onvifmp4mux.html?gi-language=python#onvifmp4mux
+        mux = 'onvifmp4mux name=mux'
+        mux_rtsp = 'rtpmp4gpay pt=96 name=pay0'
 
         test = 'video'
         if test == 'audio':
@@ -34,7 +35,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         elif test == 'video':
             pipeline_description = f"{video_pipeline} {video_rtsp}"
         elif test == 'mux':
-            pipeline_description = ''
+            pipeline_description = f'{audio_pipeline} {video_pipeline} {mux} ! {mux_rtsp}'
         else:
             print("No pipeline selected. Exiting")
             exit(1)
