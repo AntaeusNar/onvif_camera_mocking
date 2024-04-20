@@ -5,7 +5,6 @@ import gi
 
 gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
-gi.require_version('GstRsMP4Mux', '1.0')
 
 from gi.repository import Gst, GstRtspServer, GLib
 
