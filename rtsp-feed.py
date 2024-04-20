@@ -49,11 +49,19 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
             exit(1)
         pipeline.add(mux)
 
+        # Payload
+        payload = Gst.ElementFactory.make("rtpmp2tpay", "pay")
+        if not payload:
+            print("Element Payload failed to be created. Exiting")
+        pipeline.add(payload)
+
         # Linking
         source.link(visual)
         visual.link(audio_encoder)
         audio_encoder.link(mux)
+        mux.link(payload)
 
+        print("Launching pipeline")
         return pipeline
 
 # Creates an RTSP Server will full defaults
