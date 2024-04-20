@@ -1,45 +1,61 @@
 #!/usr/bin/python3
 # Run privileged: `sudo /usr/bin/python3 rtsp-feed.py`
 
-import sys
 import gi
 
 gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 
-
 from gi.repository import Gst, GstRtspServer, GLib
 
-loop = GLib.MainLoop()
-Gst.init(None)
-
+# Creates the MediaFactory
 class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def __init__(self):
         GstRtspServer.RTSPMediaFactory.__init__(self)
 
     def do_create_element(self, url):
-        global color
-        mock_pipeline = "audiotestsrc wave=7 ! tee name=t \
-            t. ! queue ! wavescope style=3 ! videoconvert ! x264enc mux.\
-            t. ! queue ! alawenc ! mux.\
-            mpegtsmux name=mux ! rtpmp2tpay"
 
-        # working
-        # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc  ! rtph264pay name=pay0 pt=96 audiotestsrc is-live=0 ! audioconvert ! audio/x-raw,rate=(int)8000,channels=(int)1 ! alawenc ! rtppcmapay pt=97 name=pay1".format(color)
-        # working
-        # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96".format(color)
+        # Create the basic pipeline
+        pipeline = Gst.pipeline
 
-
-        pipeline = Gst.parse_launch(mock_pipeline)
-
-        if not pipeline:
-            print("Pipeline " + mock_pipeline + " failed.")
+        # Source
+        source = Gst.ElementFactory.make("audiotestsrc", 'source')
+        if not source:
+            print("Element Source failed to create. Exiting")
             exit(1)
-        else:
-            print ("Pipeline launching: " + mock_pipeline)
+        source.set_property('wave', 7)
+        pipeline.add(source)
+
+        # Visual
+        visual = Gst.ElementFactory.make("wavescope", "visual")
+        if not visual:
+            print("Element Visual failed to be created. Exiting")
+            exit(1)
+        visual.set_property('style', 3)
+        pipeline.add(visual)
+
+        # Audio Encoder
+        audio_encoder = Gst.ElementFactory.make("alawenc", "audio_encoder")
+        if not audio_encoder:
+            print("Element Audio Encoder failed to be created. Exiting")
+            exit(1)
+        pipeline.add(audio_encoder)
+
+        # Muxer
+        mux = Gst.ElementFactory.make("mpegtsmux", "mux")
+        if not mux:
+            print("Element Mux failed to be created. Exiting")
+            exit(1)
+        pipeline.add(mux)
+
+        # Linking
+        source.link(visual)
+        visual.link(audio_encoder)
+        audio_encoder.link(mux)
 
         return pipeline
 
+# Creates an RTSP Server will full defaults
 class GstreamerRtspServer():
     def __init__(self):
         self.rtspServer = GstRtspServer.RTSPServer()
@@ -49,15 +65,10 @@ class GstreamerRtspServer():
         mountPoints.add_factory("/stream1", factory)
         self.rtspServer.attach(None)
 
-# Optionally pass in video bar color in decimal format
-# Choose a color: https://www.mathsisfun.com/hexadecimal-decimal-colors.html
+# main Function
 if __name__ == '__main__':
-    global color
-    if len(sys.argv) > 1:
-        color = sys.argv[1]
-        print ("Custom chosen video bar color is " + str(color))
-    else:
-        color = 4080751
-        print ("Default video bar color is " + str(color))
+    loop = GLib.MainLoop()
+    Gst.init(None)
+
     s = GstreamerRtspServer()
     loop.run()
