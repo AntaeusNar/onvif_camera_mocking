@@ -35,7 +35,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         elif test == 'video':
             pipeline_description = f"{video_pipeline} {video_rtsp}"
         elif test == 'mux':
-            pipeline_description = f"{audio_pipeline} ! aacparse ! {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
+            pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
         else:
             print("No pipeline selected. Exiting")
             exit(1)
