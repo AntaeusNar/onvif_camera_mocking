@@ -8,7 +8,7 @@ gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 gi.require_version('GstBase', '1.0')
 gi.require_version('GstAudio', '1.0')
-from gi.repository import Gst, GstRtspServer, GObject, GLib, GstBase, GstAudio, GstVisual
+from gi.repository import Gst, GstRtspServer, GObject, GLib, GstBase, GstAudio
 
 loop = GLib.MainLoop()
 Gst.init(None)
@@ -19,7 +19,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
     def do_create_element(self, url):
         global color
-        mock_pipeline = "audiotestsrc wave=2 freq=200 ! tee name=t ! queue ! audioconvert !  autoaudiosink t. ! queue ! audioconvert ! libvisual_lv_scope ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96"
+        mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc  ! rtph264pay name=pay0 pt=96 audiotestsrc is-live=0 ! audioconvert ! audio/x-raw,rate=(int)8000,channels=(int)1 ! alawenc ! rtppcmapay pt=97 name=pay1".format(color)
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96".format(color)
         print ("Pipeling launching: " + mock_pipeline)
         return Gst.parse_launch(mock_pipeline)
