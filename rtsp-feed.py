@@ -29,7 +29,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         mux = 'mpegtsmux name=mux'
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
-        test = 'video'
+        test = 'mux'
         if test == 'audio':
             pipeline_description = f"{audio_pipeline} {audio_rtsp}"
         elif test == 'video':
