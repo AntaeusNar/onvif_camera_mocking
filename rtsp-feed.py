@@ -16,14 +16,15 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def do_create_element(self, url):
 
         # Create the basic pipeline
-        pipeline = Gst.Pipeline
+        pipeline = Gst.Pipeline.new()
 
         # Source
         source = Gst.ElementFactory.make("audiotestsrc", 'source')
         if not source:
             print("Element Source failed to create. Exiting")
             exit(1)
-        source.set_property('wave', 7)
+        source.set_property('wave', 2)
+        source.set_property("is-live", True)
         pipeline.add(source)
 
         # Visual
