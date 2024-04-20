@@ -65,6 +65,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         pipeline.set_state(Gst.State.PLAYING)
 
         print("Launching pipeline")
+        pipeline.get_bus().add_watch(bus_callback)
         return pipeline
 
 # Creates an RTSP Server will full defaults
@@ -76,6 +77,23 @@ class GstreamerRtspServer():
         mountPoints = self.rtspServer.get_mount_points()
         mountPoints.add_factory("/stream1", factory)
         self.rtspServer.attach(None)
+
+# Some debugging
+def bus_callback(bus, message, loop):
+    t = message.type
+    if t == Gst.MessageType.ERROR:
+        err, debug = message.parse_error()
+        print("Error: {}, Debug: {}".format(err, debug))
+        loop.quit()
+    elif t == Gst.MessageType.WARNING:
+        err, debug = message.parse_warning()
+        print("Warning: {}, Debug: {}".format(err, debug))
+    elif t == Gst.MessageType.STATE_CHANGED:
+        old_state, new_state, pending_state = message.parse_state_changed()
+        print("State changed from {} to {}".format(
+            Gst.Element.state_get_name(old_state),
+            Gst.Element.state_get_name(new_state)))
+    return True
 
 # main Function
 if __name__ == '__main__':
