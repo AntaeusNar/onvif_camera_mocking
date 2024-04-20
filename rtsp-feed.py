@@ -15,7 +15,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
     def do_create_element(self, url):
         audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
-        audio_enc = ' ! audioconvert ! alawenc'
+        audio_enc = ' ! audioconvert ! avenc_aac'
         audio_rtsp = ' ! rtppcmapay  pt=96 name=pay0'
 
         video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
@@ -26,7 +26,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         video_pipeline = video_src + video_enc
 
         # https://gstreamer.freedesktop.org/documentation/mp4/onvifmp4mux.html?gi-language=python#onvifmp4mux
-        mux = 'onvifmp4mux name=mux'
+        mux = 'mp4mux name=mux'
         mux_rtsp = 'rtpmp4gpay pt=96 name=pay0'
 
         test = 'mux'
