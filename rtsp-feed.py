@@ -21,7 +21,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         global color
         mock_pipeline = """
     audiotestsrc wave=7 ! tee name=t
-    t. ! queue ! wavescope shader=classic ! videoconvert ! x264enc ! video/x-h264,stream-format=byte-stream ! h264parse ! rtph264pay name=videopay
+    t. ! queue ! wavescope ! videoconvert ! x264enc ! video/x-h264,stream-format=byte-stream ! h264parse ! rtph264pay name=videopay
     t. ! queue ! audioconvert ! voaacenc ! aacparse ! rtpmp4apay name=audiopay
     videopay. ! queue ! mux.
     audiopay. ! queue ! mux.
