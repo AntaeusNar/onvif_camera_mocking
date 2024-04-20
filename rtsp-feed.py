@@ -14,7 +14,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         GstRtspServer.RTSPMediaFactory.__init__(self)
 
     def do_create_element(self, url):
-        source_str = 'audiotestsrc wave=sine freq=261.63'
+        source_str = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
         audio_enc = 'alawenc'
         rtsp_payload = 'rtppcmapay pt=96 name=pay0'
 
