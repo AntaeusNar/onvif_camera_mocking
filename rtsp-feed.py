@@ -24,7 +24,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
     def do_create_element(self, url):
         global color
-        mock_pipeline = "audiotestsrc wave=2 freq=440 ! alawenc ! rtppcmapay  pt=97 name=pay1"
+        mock_pipeline = "audiotestsrc ! alawenc ! rtppcmapay  pt=97 name=pay1"
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc  ! rtph264pay name=pay0 pt=96 audiotestsrc is-live=0 ! audioconvert ! audio/x-raw,rate=(int)8000,channels=(int)1 ! alawenc ! rtppcmapay pt=97 name=pay1".format(color)
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96".format(color)
         print ("Pipeling launching: " + mock_pipeline)
