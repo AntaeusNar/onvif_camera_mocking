@@ -61,6 +61,9 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         audio_encoder.link(mux)
         mux.link(payload)
 
+        # Start playing
+        pipeline.set_state(Gst.State.PLAYING)
+
         print("Launching pipeline")
         return pipeline
 
