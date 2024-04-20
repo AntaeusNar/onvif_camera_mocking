@@ -23,6 +23,9 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     audiotestsrc wave=7 ! tee name=t
     t. ! queue ! wavescope shader=classic ! videoconvert ! x264enc ! video/x-h264,stream-format=byte-stream ! h264parse ! rtph264pay name=videopay
     t. ! queue ! audioconvert ! voaacenc ! aacparse ! rtpmp4apay name=audiopay
+    videopay. ! queue ! mux.
+    audiopay. ! queue ! mux.
+    mpegtsmux name=mux ! rtpmp2tpay
 """
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc  ! rtph264pay name=pay0 pt=96 audiotestsrc is-live=0 ! audioconvert ! audio/x-raw,rate=(int)8000,channels=(int)1 ! alawenc ! rtppcmapay pt=97 name=pay1".format(color)
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96".format(color)
