@@ -16,7 +16,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def do_create_element(self, url):
 
         # Create the basic pipeline
-        pipeline = Gst.pipeline
+        pipeline = Gst.Pipeline
 
         # Source
         source = Gst.ElementFactory.make("audiotestsrc", 'source')
