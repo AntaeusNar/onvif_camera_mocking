@@ -16,17 +16,28 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def do_create_element(self, url):
         audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
         audio_enc = ' ! audioconvert ! alawenc'
+        audio_rtsp = ' ! rtppcmapay  pt=96 name=pay0'
 
         video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
         video_enc = ' ! videoconvert ! x264enc'
+        video_rtsp = ' ! rtph264pay pt=96 name=pay0'
 
         audio_pipeline = audio_src + audio_enc
         video_pipeline = video_src + video_enc
 
         mux = 'mpegtsmux name=mux'
-        rtsp_payload = 'rtpmp2tpay pt=96 name=pay0'
+        mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
-        pipeline_description = f"{audio_pipeline} ! queue ! {mux} ! {rtsp_payload} ! {video_pipeline} ! queue ! mux."
+        test = 'audio'
+        if test == 'audio':
+            pipeline_description = f"{audio_pipeline} {audio_rtsp}"
+        elif test == 'video':
+            pipeline_description = f"{video_pipeline} {video_rtsp}"
+        elif test == 'mux':
+            pipeline_description = ''
+        else:
+            print("No pipeline selected. Exiting")
+            exit(1)
 
         print("Launching Pipeline: " + pipeline_description)
         return Gst.parse_launch(pipeline_description)
