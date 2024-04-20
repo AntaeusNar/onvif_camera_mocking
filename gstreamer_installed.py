@@ -8,5 +8,4 @@ from gi.repository import Gst
 Gst.init(None)
 
 # Print all available elements
-print(Gst.ElementFactory.list_get_elements(Gst.ElementFactoryFlags.SOURCE | Gst.ElementFactoryFlags.DEMUXER))
-print(Gst.ElementFactory.list_get_elements(Gst.ElementFactoryFlags.SINK | Gst.ElementFactoryFlags.MUXER))
+print(Gst.ElementFactory.list_get_elements())
