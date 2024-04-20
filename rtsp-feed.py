@@ -20,7 +20,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
         video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
         video_enc = ' ! videoconvert ! x264enc'
-        video_rtsp = ' ! rtph264pay pt=96 name=pay0'
+        video_rtsp = ' ! rtph264pay pt=96 name=pay1'
 
         audio_pipeline = audio_src + audio_enc
         video_pipeline = video_src + video_enc
@@ -35,7 +35,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         elif test == 'video':
             pipeline_description = f"{video_pipeline} {video_rtsp}"
         elif test == 'mux':
-            pipeline_description = f'{audio_pipeline} {video_pipeline} {mux} ! {mux_rtsp}'
+            pipeline_description = f'{audio_pipeline} {audio_rtsp} ! {video_pipeline} {video_rtsp}'
         else:
             print("No pipeline selected. Exiting")
             exit(1)
