@@ -15,8 +15,8 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
     def do_create_element(self, url):
         audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
-        audio_enc = ' ! audioconvert ! avenc_ac3 bitrate=192000'
-        audio_rtsp = ' ! rtppcmapay  pt=96 name=pay0'
+        audio_enc = ' ! audioconvert ! audioresample ! voaacenc'
+        audio_rtsp = ' ! rtpmp4gpay  pt=96 name=pay0'
 
         video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
         video_enc = ' ! videoconvert ! x264enc'
@@ -29,7 +29,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         mux = 'mpegtsmux name=mux'
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
-        test = 'mux'
+        test = 'audio'
         if test == 'audio':
             pipeline_description = f"{audio_pipeline} {audio_rtsp}"
         elif test == 'video':
