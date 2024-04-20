@@ -19,7 +19,7 @@ Gst.init(None)
 class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def __init__(self):
         GstRtspServer.RTSPMediaFactory.__init__(self)
-        GstPbutils.pb_utils_init ()
+        #GstPbutils.pb_utils_init ()
 
 
     def do_create_element(self, url):
