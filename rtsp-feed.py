@@ -26,7 +26,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         mux = 'mpegtsmux name=mux'
         rtsp_payload = 'rtpmp2tpay pt=96 name=pay0'
 
-        pipeline_description = f"{audio_pipeline} mux. ! {video_pipeline} mux. ! {mux} ! {rtsp_payload}"
+        pipeline_description = f"{audio_pipeline} ! queue ! {mux} ! {rtsp_payload} ! {video_pipeline} ! queue ! mux."
 
         print("Launching Pipeline: " + pipeline_description)
         return Gst.parse_launch(pipeline_description)
