@@ -16,16 +16,23 @@ Gst.init(None)
 class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def __init__(self):
         GstRtspServer.RTSPMediaFactory.__init__(self)
-        #GstPbutils.pb_utils_init ()
-
 
     def do_create_element(self, url):
         global color
-        mock_pipeline = "audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=10000 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20 ! alawenc ! rtppcmapay  pt=96 name=pay0"
+        mock_pipeline = "audiotestsrc wave=7 ! tee name=t \
+            t.! libvisual_lv_scope bands=64 ! x264enc ! rtph264pay name=pay0 pt=96 \
+            t.! alawenc ! rtppcmapay  name=pay1 pt=97"
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc  ! rtph264pay name=pay0 pt=96 audiotestsrc is-live=0 ! audioconvert ! audio/x-raw,rate=(int)8000,channels=(int)1 ! alawenc ! rtppcmapay pt=97 name=pay1".format(color)
         # mock_pipeline = "videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color={0} ! x264enc ! queue ! rtph264pay name=pay0 config-interval=1 pt=96".format(color)
-        print ("Pipeling launching: " + mock_pipeline)
-        return Gst.parse_launch(mock_pipeline)
+        pipeline = Gst.parse_launch(mock_pipeline)
+
+        if not pipeline:
+            print("Pipeline " + mock_pipeline + " failed.")
+            exit(1)
+        else:
+            print ("Pipeline launching: " + mock_pipeline)
+
+        return pipeline
 
 class GstreamerRtspServer():
     def __init__(self):
