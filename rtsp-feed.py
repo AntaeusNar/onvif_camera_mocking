@@ -25,6 +25,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         audio_pipeline = audio_src + audio_enc
         video_pipeline = video_src + video_enc
 
+        # https://developer.ridgerun.com/wiki/index.php/GStreamer_RTSP_negoiated_RTP_Transport_Streamer_Back_Channel_Communication
         # https://gstreamer.freedesktop.org/documentation/mp4/onvifmp4mux.html?gi-language=python#onvifmp4mux
         mux = 'mpegtsmux name=mux'
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
