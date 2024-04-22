@@ -54,6 +54,51 @@ class GstreamerRtspServer():
         mountPoints.add_factory("/stream1", factory)
         self.rtspServer.attach(None)
 
+# Creates an Onvif RTSP Media Factory
+# https://gstreamer.freedesktop.org/documentation/gst-rtsp-server/rtsp-onvif-media-factory.html?gi-language=python
+class OnvifRtspMediaFactory(GstRtspServer.RTSPOnvifMediaFactory):
+    def __init__(self):
+        GstRtspServer.RTSPOnvifMediaFactory.__init__(self)
+
+    def do_create_element(self, url):
+        # define audio source
+
+        # define audio encoding
+
+        # slip/tee audio
+
+        # define video test source
+
+        # define audio visualization from audio source
+
+        # define video encoding
+
+        # define timestamp
+
+        # define mux
+
+        # define mux RTSP
+
+        # combine full pipeline
+
+        # Return completed pipeline
+        return
+
+# Creates an Onvif RTSP Server with full defaults
+# https://gstreamer.freedesktop.org/documentation/gst-rtsp-server/rtsp-onvif-server.html?gi-language=python
+class GstreamerOnvifRtspServer():
+    def __init__(self):
+        # create onvif rtsp media server
+        self.rtspServer = GstRtspServer.RTSPOnvifServer()
+        # define the factory (new stream for each connection)
+        factory = OnvifRtspMediaFactory()
+        # set as shared
+        factory.set_shared(True)
+        # find the mount point and attach the factory
+        mountPoints = self.rtspServer.get_mount_points()
+        mountPoints.add_factory('/stream1', factory)
+        self.rtspServer.attach(None)
+
 # main Function
 if __name__ == '__main__':
     loop = GLib.MainLoop()
