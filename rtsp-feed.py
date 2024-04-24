@@ -114,6 +114,6 @@ if __name__ == '__main__':
     loop = GLib.MainLoop()
     Gst.init(None)
 
-    # s = GstreamerRtspServer()
-    s = GstreamerOnvifRtspServer()
+    s = GstreamerRtspServer()
+    # s = GstreamerOnvifRtspServer()
     loop.run()
