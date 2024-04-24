@@ -4,6 +4,34 @@ This project consists of tools and instructions for mocking an ONVIF compliant I
 Useful information:
 - [Genivia ONVIF](https://www.genivia.com/examples/onvif/index.html)
 
+## Dev Environment
+1. Install dependencies
+    ```sh
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install git python3-.10-venv \
+        libgstrtspserver-1.0-dev gstreamer1.0-rtsp gstreamer1.0-plugins-ugly -y
+    ```
+
+1. Clone this repo
+    ```sh
+    cd ~
+    git clone https://github.com/AntaeusNar/onvif_camera_mocking.git
+    ```
+
+1. Setup and enter virtual python environment
+    ```sh
+    cd onvif_camera_mocking
+    python3 -m venv env
+    source env/bin/activate
+    pip install -r requirements.txt
+    ```
+
+1. Test
+    ```sh
+    pytest
+    ```
+
+NOTE: Depending on the config of your environment you might need to update env/pyvenv.cfg > 'include-system-site-packages' to true.
 
 ## Steps
 > Note: these steps only work on Linux and have only been tested on Ubuntu 22.04 LTS
