@@ -42,7 +42,7 @@ class OnvifRtspMediaFactory(GstRtspServer.RTSPOnvifMediaFactory):
         # https://gstreamer.freedesktop.org/documentation/mp4/onvifmp4mux.html?gi-language=python#onvifmp4mux
         mux = 'mpegtsmux name=mux'
         # define mux RTSP
-        mux_rtsp = 'rtpmp2tpay pt=96 name=pay1'
+        mux_rtsp = 'rtpmp2tpay pt=96 name=fish0'
 
         # combine full pipeline
         pipeline_description = f"{audio_test_src} {audio_enc} ! aacparse ! mux. {video_test_src} ! clockoverlay time-format='%%H:%%M:%%S' {video_enc}  ! h264parse ! {mux}  ! {mux_rtsp}"
