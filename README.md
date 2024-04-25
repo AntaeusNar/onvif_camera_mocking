@@ -8,7 +8,7 @@ Useful information:
 1. Install dependencies
     ```sh
     sudo apt update && sudo apt upgrade -y
-    sudo apt install git python3-.10-venv \
+    sudo apt install git python3.10-venv \
         libgstrtspserver-1.0-dev gstreamer1.0-rtsp gstreamer1.0-plugins-ugly -y
     ```
 
