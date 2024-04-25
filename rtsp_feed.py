@@ -28,24 +28,14 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         video_rtsp = ' ! rtph264pay pt=96 name=pay1'
 
         audio_pipeline = audio_src + audio_enc
-        video_pipeline = video_src + video_enc
+        video_pipeline = video_src + " ! clockoverlay time-format='%%H:%%M:%%S' "+ video_enc
 
         # https://developer.ridgerun.com/wiki/index.php/GStreamer_RTSP_negoiated_RTP_Transport_Streamer_Back_Channel_Communication
 
         mux = 'mpegtsmux name=mux'
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
-        test = 'mux'
-        if test == 'audio':
-            pipeline_description = f"{audio_pipeline} {audio_rtsp}"
-        elif test == 'video':
-            pipeline_description = f"{video_pipeline} {video_rtsp}"
-        elif test == 'mux':
-            pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
-        else:
-            print("No pipeline selected. Exiting")
-            exit(1)
-
+        pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
         print("Launching Standard Pipeline: " + pipeline_description)
         return Gst.parse_launch(pipeline_description)
 
