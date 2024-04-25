@@ -117,6 +117,6 @@ class GstreamerOnvifRtspServer():
 # main Function
 if __name__ == '__main__':
 
-    # s = GstreamerRtspServer()
-    s = GstreamerOnvifRtspServer()
+    s = GstreamerRtspServer()
+    # s = GstreamerOnvifRtspServer()
     loop.run()
