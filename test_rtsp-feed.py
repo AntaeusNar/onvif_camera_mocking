@@ -5,7 +5,6 @@ gi.require_version('GstRtspServer', '1.0')
 
 from gi.repository import Gst, GstRtspServer, GLib, GstRtsp
 
-import rtsp_feed
 from rtsp_feed import *
 
 
