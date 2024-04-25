@@ -8,6 +8,9 @@ gi.require_version('GstRtspServer', '1.0')
 
 from gi.repository import Gst, GstRtspServer, GLib, GObject
 
+loop = GLib.MainLoop()
+Gst.init(None)
+
 # Creates the MediaFactory
 class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     __test__ = False
@@ -112,8 +115,7 @@ class GstreamerOnvifRtspServer():
 
 # main Function
 if __name__ == '__main__':
-    loop = GLib.MainLoop()
-    Gst.init(None)
+
 
     s = GstreamerRtspServer()
     # s = GstreamerOnvifRtspServer()
