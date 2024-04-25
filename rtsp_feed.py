@@ -13,7 +13,7 @@ Gst.init(None)
 
 # Creates the MediaFactory
 class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
-    __test__ = False
+    #__test__ = False
     def __init__(self):
         GstRtspServer.RTSPMediaFactory.__init__(self)
 
