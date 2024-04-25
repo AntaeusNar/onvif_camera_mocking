@@ -28,7 +28,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         video_rtsp = ' ! rtph264pay pt=96 name=pay1'
 
         audio_pipeline = audio_src + audio_enc
-        video_pipeline = video_src + " ! clockoverlay time-format='%H:%M:%S' "+ video_enc
+        video_pipeline = video_src + " ! clockoverlay time-format=%H:%M:%S "+ video_enc
 
         # https://developer.ridgerun.com/wiki/index.php/GStreamer_RTSP_negoiated_RTP_Transport_Streamer_Back_Channel_Communication
 
