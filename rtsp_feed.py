@@ -20,40 +20,43 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
     def do_create_element(self, url):
 
-        # working 20240427
-        audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
-        audio_enc = ' ! audioconvert ! audioresample ! voaacenc'
-
-        video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
-        video_enc = ' ! videoconvert ! x264enc'
-
-        audio_pipeline = audio_src + audio_enc
-        video_pipeline = video_src + " ! clockoverlay time-format=%H:%M:%S "+ video_enc
-
+        # Shared elements
+        audio_enc = 'audioconvert ! audioresample ! voaacenc'
+        video_enc = 'videoconvert ! x264enc'
+        clock = 'clockoverlay time-format=%H:%M:%S'
         mux = 'mpegtsmux name=mux'
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
-        org_pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
+        switch = 'viz'
+        if switch == 'org':
+            # Test of fake audio and video sources muxed to RTSP
+            # Working 20240427
+            audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
 
-        # Tee, Queues, and visualizations
+            video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
 
-        # audio into the tee
-        # https://stackoverflow.com/questions/13364610/gstreamer-tee-multiple-multiplexer
-        audio_to_tee = f"{audio_src} ! tee name=audio_t"
+            audio_pipeline = f"{audio_src} ! {audio_enc}"
+            video_pipeline = f"{video_src} ! {clock} ! {video_enc}"
 
-         # https://gstreamer.freedesktop.org/documentation/audiovisualizers/spectrascope.html?gi-language=python#spectrascope
-        video_w_vis = f" spectrascope ! clockoverlay time-format=%H:%M:%S {video_enc} ! h264parse"
+            pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
 
-        vis_pipeline_description = f"{audio_to_tee} audio_t. ! queue {audio_enc} ! aacparse ! mux. audio_t. ! queue ! {video_w_vis} ! {mux} ! {mux_rtsp}"
+        elif switch == 'viz':
+            # Test of fake audio w/ visualistion, tee, and muxing to RSTP
+            # Working 20240427
+            audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
+
+            # https://stackoverflow.com/questions/13364610/gstreamer-tee-multiple-multiplexer
+            audio_to_tee = f"{audio_src} ! tee name=audio_t"
+
+            # https://gstreamer.freedesktop.org/documentation/audiovisualizers/spectrascope.html?gi-language=python#spectrascope
+            video_w_vis = f" spectrascope ! {clock} ! {video_enc} ! h264parse"
+
+            pipeline_description = f"{audio_to_tee} audio_t. ! queue {audio_enc} ! aacparse ! mux. audio_t. ! queue ! {video_w_vis} ! {mux} ! {mux_rtsp}"
+        else:
+            # Test of selecting physical mic, visualisation, tee, and muxing to RTSP
+            pipeline_description = ''
 
         # finalize and send
-
-        switch = ''
-        if switch == 'org' :
-            pipeline_description = org_pipeline_description
-        else:
-            pipeline_description = vis_pipeline_description
-
         print("Launching Standard Pipeline: " + pipeline_description)
         return Gst.parse_launch(pipeline_description)
 
