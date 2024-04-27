@@ -19,6 +19,8 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         GstRtspServer.RTSPMediaFactory.__init__(self)
 
     def do_create_element(self, url):
+
+        # working 20240427
         audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
         audio_enc = ' ! audioconvert ! audioresample ! voaacenc'
 
@@ -28,12 +30,30 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
         audio_pipeline = audio_src + audio_enc
         video_pipeline = video_src + " ! clockoverlay time-format=%H:%M:%S "+ video_enc
 
-        # https://developer.ridgerun.com/wiki/index.php/GStreamer_RTSP_negoiated_RTP_Transport_Streamer_Back_Channel_Communication
-
         mux = 'mpegtsmux name=mux'
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
-        pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
+        org_pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
+
+        # Tee, Queues, and visualizations
+
+        # audio into the tee
+        # https://stackoverflow.com/questions/13364610/gstreamer-tee-multiple-multiplexer
+        audio_to_tee = f"{audio_src} ! tee name=audio_t"
+
+         # https://gstreamer.freedesktop.org/documentation/audiovisualizers/spectrascope.html?gi-language=python#spectrascope
+        video_w_vis = f" spectrascope ! clockoverlay time-format=%H:%M:%S {video_enc} ! h264parse "
+
+        vis_pipeline_description = f"{audio_to_tee} audio_t. ! queue {audio_enc} ! mux. {mux} ! {mux_rtsp}"
+
+        # finalize and send
+
+        switch = ''
+        if switch == 'org' :
+            pipeline_description = org_pipeline_description
+        else:
+            pipeline_description = vis_pipeline_description
+
         print("Launching Standard Pipeline: " + pipeline_description)
         return Gst.parse_launch(pipeline_description)
 
