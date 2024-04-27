@@ -21,10 +21,10 @@ fi
 
 # Ask rtsp_feed nicely to terminate.
 if pgrep rtsp_feed.py > /dev/null; then
-    sudo pkill rtsp-feed.py
+    sudo pkill rtsp_feed.py
 fi
 
 # Forcibly terminate.
 if pgrep rtsp_feed.py > /dev/null; then
-    sudo pkill -9 rtsp-feed.py
+    sudo pkill -9 rtsp_feed.py
 fi
