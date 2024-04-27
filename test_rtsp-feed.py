@@ -18,7 +18,7 @@ class TestRstpServer:
     def test_testRtspMediaFactoryisClass(self):
         assert isinstance(self.factory, GstRtspServer.RTSPMediaFactory) #check that parameter is of type GstRtspServer.RTSPMediaFactory
 
-    def test_testRtspMediaFactoryCreatesElement(self):
+    def test_testRtspMediaFactoryElementsAreValidAndConnected(self):
         url = GstRtsp.RTSPUrl
         test_element = self.factory.do_create_element(url)
         assert isinstance(test_element, Gst.Element)
@@ -36,7 +36,7 @@ class TestOnvifRstpServer:
     def test_onvifRtspMediaFactoryinsClass(self):
         assert isinstance(self.factory, GstRtspServer.RTSPOnvifMediaFactory) #check that parameter is of type GstRtspServer.RTSPOnvifMediaFactory
 
-    def test_onvifRtspMediaFactoryCreatesElement(self):
+    def test_onvifRtspMediaFactoryElementsAreValidAndConnected(self):
         url = GstRtsp.RTSPUrl
         test_element = self.factory.do_create_element(url)
         assert isinstance(test_element, Gst.Element)
