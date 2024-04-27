@@ -44,7 +44,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
          # https://gstreamer.freedesktop.org/documentation/audiovisualizers/spectrascope.html?gi-language=python#spectrascope
         video_w_vis = f" spectrascope ! clockoverlay time-format=%H:%M:%S {video_enc} ! h264parse "
 
-        vis_pipeline_description = f"{audio_to_tee} audio_t. ! queue {audio_enc} ! mux. {mux} ! {mux_rtsp}"
+        vis_pipeline_description = f"{audio_to_tee} audio_t. ! queue {audio_enc} ! mux. audio_t. ! queue ! {video_w_vis} ! mux. {mux} ! {mux_rtsp}"
 
         # finalize and send
 
