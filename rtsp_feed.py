@@ -51,9 +51,9 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
             # https://gstreamer.freedesktop.org/documentation/audiovisualizers/spectrascope.html?gi-language=python#spectrascope
             video_w_vis = f" spectrascope ! {clock} ! {video_enc} ! h264parse"
 
-            pipeline_description = f"{audio_to_tee} audio_t. ! queue {audio_enc} ! aacparse ! mux. audio_t. ! queue ! {video_w_vis} ! {mux} ! {mux_rtsp}"
+            pipeline_description = f"{audio_to_tee} audio_t. ! queue ! {audio_enc} ! aacparse ! mux. audio_t. ! queue ! {video_w_vis} ! {mux} ! {mux_rtsp}"
         else:
-            # Test of selecting physical mic, visualisation, tee, and muxing to RTSP
+            # Test of selecting physical mic, visualization, tee, and muxing to RTSP
             pipeline_description = ''
 
         # finalize and send
