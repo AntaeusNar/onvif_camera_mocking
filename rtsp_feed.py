@@ -21,11 +21,9 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
     def do_create_element(self, url):
         audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
         audio_enc = ' ! audioconvert ! audioresample ! voaacenc'
-        audio_rtsp = ' ! rtpmp4gpay  pt=96 name=pay0'
 
         video_src = 'videotestsrc pattern=bar horizontal-speed=2 background-color=9228238 foreground-color=4080751'
         video_enc = ' ! videoconvert ! x264enc'
-        video_rtsp = ' ! rtph264pay pt=96 name=pay1'
 
         audio_pipeline = audio_src + audio_enc
         video_pipeline = video_src + " ! clockoverlay time-format=%H:%M:%S "+ video_enc
