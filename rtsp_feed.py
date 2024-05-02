@@ -41,7 +41,7 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
             pipeline_description = f"{audio_pipeline} ! aacparse ! mux. {video_pipeline} ! h264parse ! {mux} ! {mux_rtsp}"
 
         elif switch == 'viz':
-            # Test of fake audio w/ visualistion, tee, and muxing to RSTP
+            # Test of fake audio w/ visualization, tee, and muxing to RSTP
             # Working 20240427
             audio_src = 'audiotestsrc wave=ticks apply-tick-ramp=true tick-interval=100000000 freq=261.63 volume=0.4 marker-tick-period=10 sine-periods-per-tick=20'
 
@@ -54,7 +54,10 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
             pipeline_description = f"{audio_to_tee} audio_t. ! queue ! {audio_enc} ! aacparse ! mux. audio_t. ! queue ! {video_w_vis} ! {mux} ! {mux_rtsp}"
         else:
             # Test of selecting physical mic, visualization, tee, and muxing to RTSP
-            pipeline_description = ''
+            audio_src = ''
+            audio_to_tee = f"{audio_src} ! tee name=audio_t"
+            video_w_vis = f" spectrascope ! {clock} ! {video_enc} ! h264parse"
+            pipeline_description = f"{audio_to_tee} audio_t. ! queue ! {audio_enc} ! aacparse ! mux. audio_t. ! queue ! {video_w_vis} ! {mux} ! {mux_rtsp}"
 
         # finalize and send
         print("Launching Standard Pipeline: " + pipeline_description)
