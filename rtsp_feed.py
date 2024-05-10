@@ -80,7 +80,7 @@ class OnvifRtspMediaFactory(GstRtspServer.RTSPOnvifMediaFactory):
         GstRtspServer.RTSPOnvifMediaFactory.__init__(self)
 
     def do_create_element(self, url):
-        self.set_backchannel_launch('capsfilter caps=\"application/x-rtp,media=audio,payload=0,clock-rate=8000,encoding-name-PCMU\" name=depay_backchannel ! rtppcmudepay ! fakesink async=false')
+        # self.set_backchannel_launch('capsfilter caps=\"application/x-rtp,media=audio,payload=0,clock-rate=8000,encoding-name-PCMU\" name=depay_backchannel ! rtppcmudepay ! fakesink async=false')
         # define audio source
 
         # define audio test source
@@ -127,7 +127,7 @@ class GstreamerOnvifRtspServer():
         factory.set_shared(True)
         # find the mount point and attach the factory
         mountPoints = self.rtspServer.get_mount_points()
-        mountPoints.add_factory('/test1234', factory)
+        mountPoints.add_factory('/steam1', factory)
         self.rtspServer.attach(None)
 
 # main Function
