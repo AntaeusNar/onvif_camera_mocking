@@ -107,7 +107,8 @@ class OnvifRtspMediaFactory(GstRtspServer.RTSPOnvifMediaFactory):
         mux_rtsp = 'rtpmp2tpay pt=96 name=pay0'
 
         # combine full pipeline
-        pipeline_description = f"{audio_test_src} {audio_enc} ! aacparse ! mux. {video_test_src} ! clockoverlay time-format='%%H:%%M:%%S' {video_enc}  ! h264parse ! {mux}  ! {mux_rtsp}"
+        # pipeline_description = f"{audio_test_src} {audio_enc} ! aacparse ! mux. {video_test_src} ! clockoverlay time-format='%%H:%%M:%%S' {video_enc}  ! h264parse ! {mux}  ! {mux_rtsp}"
+        pipeline_description = "audiotestsrc ! audio/x-raw,format=S16LE,rate=8000,channels=1 ! audioconvert ! audioresample ! mulawenc ! rtppcmupay name=pay0 pt=0"
 
         # Return completed pipeline
         print("Launching Onvif Pipeline: " + pipeline_description)
