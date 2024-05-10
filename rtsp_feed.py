@@ -126,7 +126,7 @@ class GstreamerOnvifRtspServer():
         factory.set_shared(True)
         # find the mount point and attach the factory
         mountPoints = self.rtspServer.get_mount_points()
-        mountPoints.add_factory('/stream1', factory)
+        mountPoints.add_factory('/test1234', factory)
         self.rtspServer.attach(None)
 
 # main Function
